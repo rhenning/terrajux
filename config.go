@@ -6,31 +6,39 @@ import (
 	"path/filepath"
 )
 
-const Name = "terrajux"
+var (
+	Name       = "terrajux"
+	Version    = "dev"
+	ProjectURL = "https://github.com/rhenning/terrajux"
+)
 
-var Version = "dev"
+type Config struct {
+	Name       string
+	Version    string
+	ProjectURL string
+	DataDir    string
+	CacheDir   string
+	CacheClear bool
+	GitURL     string
+	GitRefV1   string
+	GitRefV2   string
+	GitSubpath string
+}
 
-const Usage = `
-https://github.com/rhenning/terrajux
+func NewConfig() *Config {
+	config := &Config{
+		Name:       Name,
+		Version:    Version,
+		ProjectURL: ProjectURL,
+	}
 
-terrajux diffs the source code of a terraform project stored in a git repo-
-sitory, along with the source of all of its transitive module dependencies.
+	config.setDefaultDataDir()
+	config.setDefaultCacheDir()
 
-usage:
+	return config
+}
 
-	terrajux [-clean] giturl ref1 ref2 [subpath]
-	terrajux -clean
-
-		giturl:  a git-compatible url
-		ref1:    a starting git reference (tag, branch, or sha1)
-		ref2:    an ending git reference
-		subpath: an optional subpath of the repository containing the
-					terraform module to initialize and compare
-
-	   -clean:   wipe terrajux's git checkout and module cache 
-`
-
-func ConfigDir() string {
+func (c *Config) setDefaultDataDir() string {
 	u, err := user.Current()
 
 	if err != nil {
@@ -40,6 +48,6 @@ func ConfigDir() string {
 	return filepath.Join(u.HomeDir, fmt.Sprintf(".%s", Name))
 }
 
-func CacheDir() string {
-	return filepath.Join(ConfigDir(), "cache")
+func (c *Config) setDefaultCacheDir() string {
+	return filepath.Join(c.DataDir, "cache")
 }

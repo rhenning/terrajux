@@ -49,7 +49,7 @@ using the wrong version of terraform locally? i have. don't do that.
 ## who?
 
 `terrajux` is primarily aimed at site reliability and infrastructure engineers managing systems
-with nested terraform modules that may be spread across many repositories.
+built from nested terraform modules spread across many repositories.
 
 it is maintained by [rich henning](https://github.com/rhenning), a software engineer living and
 working in philadelphia.

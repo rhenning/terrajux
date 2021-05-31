@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestClone(t *testing.T) {
+func TestGit_Clone(t *testing.T) {
 	type args struct {
 		url string
 		ref string
@@ -45,7 +45,8 @@ func TestClone(t *testing.T) {
 
 			defer os.RemoveAll(tt.args.dir)
 
-			err := Clone(tt.args.url, tt.args.ref, tt.args.dir)
+			git := New()
+			err := git.Clone(tt.args.url, tt.args.ref, tt.args.dir)
 			assert.NoErrorf(t, err, "Clone(%+v) error: %v", tt.args, err)
 		})
 	}

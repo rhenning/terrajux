@@ -2,6 +2,14 @@ package cache
 
 import "os"
 
+type Ensurer interface {
+	Ensure() error
+}
+
+type Clearer interface {
+	Clear() error
+}
+
 type Cache struct {
 	Dir string
 }
