@@ -1,0 +1,35 @@
+before:
+  hooks:
+    - make clean
+    - make tidy
+    - go generate ./...
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+      - openbsd
+      - solaris
+    main: ./cmd/terrajux
+    ldflags: -s -w -X github.com/rhenning/terrajux.Version={{.Version}}
+archives:
+  ## may enable these, but leaving disabled atm to align w/ terraform
+  # - replacements:
+  #     darwin: Darwin
+  #     linux: Linux
+  #     windows: Windows
+  #     386: i386
+  #     amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "dev-{{.CommitTimestamp}}-{{.ShortCommit}}"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
