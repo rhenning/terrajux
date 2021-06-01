@@ -1,9 +1,17 @@
 # terrajux
 
+[![License](https://img.shields.io/github/license/rhenning/terrajux?style=for-the-badge)](LICENSE)
+[![Release](https://img.shields.io/github/release/rhenning/terrajux.svg?style=for-the-badge)](https://github.com/rhenning/terrajux/releases/latest)
+<!--
+[![Build status](https://img.shields.io/github/workflow/rhenning/terrajux/build?style=for-the-badge)](https://github.com/rhenning/terrajux/actions?workflow=build)
+[![Codecov branch](https://img.shields.io/codecov/c/github/rhenning/terrajux/main.svg?style=for-the-badge)](https://codecov.io/gh/rhenning/terrajux)
+[![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge)](http://godoc.org/github.com/rhenning/terrajux)
+-->
+
 `terrajux` [diff](https://en.wikipedia.org/wiki/Diff)s the source code of a
 [Terraform](https://github.com/hashicorp/terraform)
-[root module](https://www.terraform.io/docs/language/modules/index.html#the-root-module) project
-and all of its transitive module dependencies between two git refs.
+[root module](https://www.terraform.io/docs/language/modules/index.html#the-root-module) project,
+along with the source of all its transitive module dependencies, between two git refs.
 
 
 ## how?
@@ -11,10 +19,10 @@ and all of its transitive module dependencies between two git refs.
 try it!
 
 ```
-terrajux giturl subpath ref1 ref2
+terrajux giturl v1ref v2ref [subpath]
 
-# for example:
-terrajux https://github.com/terraform-aws-modules/terraform-aws-iam.git /modules/iam-user 4.1.0 master
+# example:
+terrajux https://github.com/terraform-aws-modules/terraform-aws-iam.git v3.15.0 master modules/iam-user
 ```
 
 
@@ -73,3 +81,7 @@ also, many of the tools intended for use within the terraform ecosystem have nam
 `terrac[o]mp` translates from speech to text with some ambiguity.
 
 _juxtapose_ popped into my head while considering the possibilities, and so we have `terrajux`.
+
+## license
+
+this project is released under the [apache 2.0 license](LICENSE).
