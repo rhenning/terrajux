@@ -25,7 +25,7 @@ var (
 )
 
 type Initer interface {
-	Init() error
+	Init(dir string) error
 }
 
 type Runner interface {
@@ -33,21 +33,20 @@ type Runner interface {
 }
 
 type CLICommand struct {
+	Dir          string
 	Command      string
 	CommandFlags []string
 }
 
 type CLI struct {
 	ExecCommand string
-	Dir         string
 	Env         []string
 	GlobalFlags []string
 }
 
-func NewCLI(chdir string) *CLI {
+func NewCLI() *CLI {
 	return &CLI{
 		ExecCommand: ExecCommand,
-		Dir:         chdir,
 		Env:         globalEnv,
 		GlobalFlags: globalFlags,
 	}
@@ -58,7 +57,7 @@ func (c *CLI) Run(cc *CLICommand) error {
 	cmd := exec.Command(c.ExecCommand, args...)
 
 	cmd.Env = append(os.Environ(), c.Env...)
-	cmd.Dir = c.Dir
+	cmd.Dir = cc.Dir
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -66,8 +65,9 @@ func (c *CLI) Run(cc *CLICommand) error {
 	return cmd.Run()
 }
 
-func (c *CLI) Init() error {
+func (c *CLI) Init(dir string) error {
 	return c.Run(&CLICommand{
+		Dir:          dir,
 		Command:      tfInitCommand,
 		CommandFlags: tfInitCommandFlags,
 	})

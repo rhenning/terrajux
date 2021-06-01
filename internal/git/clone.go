@@ -1,6 +1,10 @@
 package git
 
 import (
+	"fmt"
+	"net/url"
+	"strings"
+
 	git "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 )
@@ -12,7 +16,7 @@ const (
 )
 
 type Cloner interface {
-	Clone() error
+	Clone(url string, ref string, dir string) error
 }
 
 type Git struct{}
@@ -42,4 +46,23 @@ func (g *Git) mkCloneOptions(url string, ref plumbing.ReferenceName) *git.CloneO
 		Depth:         cloneDepth,
 		//Progress:      os.Stdout, // for more info
 	}
+}
+
+func URLPath(u string, ref string) (path string) {
+	up, err := url.Parse(u)
+
+	if err != nil {
+		return urlPathSSH(u, ref)
+	}
+
+	path = fmt.Sprintf("%s%s/%s", up.Host, up.Path, ref)
+	return path
+}
+
+func urlPathSSH(u string, ref string) (path string) {
+	ss := strings.SplitN(u, "@", 2)
+	hostpath := ss[len(ss)-1]
+	hostpath = strings.Replace(hostpath, ":", "/", 1)
+	path = fmt.Sprintf("%s/%s", hostpath, ref)
+	return path
 }

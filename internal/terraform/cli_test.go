@@ -19,7 +19,7 @@ module "consul" {
 func TestCLIVersion(t *testing.T) {
 	t.Parallel()
 
-	tfcli := NewCLI("/tmp/")
+	tfcli := NewCLI()
 
 	assert.NoError(t, tfcli.Version(), "CLI.Version() should not error")
 }
@@ -33,8 +33,8 @@ func TestCLIInit(t *testing.T) {
 	err := th.WriteFile(t, filepath.Join(tdir, "test.tf"), testModule)
 	assert.NoError(t, err, "write a TF module to tempdir prior to CLI.Init()")
 
-	tfcli := NewCLI(tdir)
-	err = tfcli.Init()
+	tfcli := NewCLI()
+	err = tfcli.Init(tdir)
 
 	assert.NoError(t, err, "CLI.Init() should not error")
 }

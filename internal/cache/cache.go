@@ -2,11 +2,8 @@ package cache
 
 import "os"
 
-type Ensurer interface {
+type Initializer interface {
 	Ensure() error
-}
-
-type Clearer interface {
 	Clear() error
 }
 

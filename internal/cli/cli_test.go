@@ -160,7 +160,8 @@ func TestCLI_ParseArgs(t *testing.T) {
 				assert.Equalf(
 					tt.wantConfigValue, tt.fields.Config,
 					"CLI.ParseArgs() wantConfigValue=%+v, config=%+v",
-					tt.wantConfigValue, clii.Config)
+					tt.wantConfigValue, clii.Config,
+				)
 			}
 		})
 	}

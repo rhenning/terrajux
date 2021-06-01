@@ -38,16 +38,16 @@ func NewConfig() *Config {
 	return config
 }
 
-func (c *Config) setDefaultDataDir() string {
+func (c *Config) setDefaultDataDir() {
 	u, err := user.Current()
 
 	if err != nil {
 		panic("couldn't lookup current user x.x")
 	}
 
-	return filepath.Join(u.HomeDir, fmt.Sprintf(".%s", Name))
+	c.DataDir = filepath.Join(u.HomeDir, fmt.Sprintf(".%s", Name))
 }
 
-func (c *Config) setDefaultCacheDir() string {
-	return filepath.Join(c.DataDir, "cache")
+func (c *Config) setDefaultCacheDir() {
+	c.CacheDir = filepath.Join(c.DataDir, "cache")
 }
