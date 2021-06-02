@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/github/license/rhenning/terrajux?style=for-the-badge)](LICENSE)
 [![Release](https://img.shields.io/github/release/rhenning/terrajux.svg?style=for-the-badge)](https://github.com/rhenning/terrajux/releases/latest)
+![Build](https://img.shields.io/github/workflow/status/rhenning/terrajux/test/main?style=for-the-badge)
 <!--
 [![Build status](https://img.shields.io/github/workflow/rhenning/terrajux/build?style=for-the-badge)](https://github.com/rhenning/terrajux/actions?workflow=build)
 [![Codecov branch](https://img.shields.io/codecov/c/github/rhenning/terrajux/main.svg?style=for-the-badge)](https://codecov.io/gh/rhenning/terrajux)
