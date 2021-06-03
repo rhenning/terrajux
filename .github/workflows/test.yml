@@ -33,18 +33,18 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
 
     steps:
-      - name: setup go
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: setup-go
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.go-version }}
 
-      - name: setup terraform
+      - name: setup-terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ matrix.tf-version }}
 
-      - name: checkout
-        uses: actions/checkout@v2
-
-      - name: test
+      - name: run-tests
         run: make test
