@@ -1,18 +1,11 @@
-before:
-  hooks:
-    - make clean
-    - make tidy
-    - go generate ./...
 builds:
   - env:
       - CGO_ENABLED=0
     goos:
       - linux
-      - windows
       - darwin
-      - freebsd
-      - openbsd
-      - solaris
+      # win support is not quite there yet
+      #- windows
     main: ./cmd/terrajux
     ldflags: -s -w -X github.com/rhenning/terrajux.Version={{.Version}}
 archives:
