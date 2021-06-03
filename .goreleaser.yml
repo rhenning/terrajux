@@ -4,11 +4,18 @@ builds:
     goos:
       - linux
       - darwin
-      # win support is not quite there yet
+      - freebsd
+      - openbsd
+      - solaris
+      ## windows support is still iffy
       #- windows
     main: ./cmd/terrajux
     ldflags: -s -w -X github.com/rhenning/terrajux.Version={{.Version}}
 archives:
+  wrap_in_directory: true
+  format_overrides:
+    - goos: windows
+      format: zip
   ## may enable these, but leaving disabled atm to align w/ terraform
   # - replacements:
   #     darwin: Darwin
