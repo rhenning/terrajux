@@ -1,8 +1,5 @@
 package cli
 
-// Usage: terrajux [options] <giturl> <v1ref> <v2ref> [subpath]
-// Usage: terrajux [-help|-version] [-datadir d] [-clear] giturl v1ref v2ref [subpath]
-
 import (
 	"bytes"
 	"flag"
@@ -72,6 +69,7 @@ func (c *CLI) ParseArgs() (message string, err error) {
 	flags.SetOutput(&buf)
 
 	flags.BoolVar(&c.Config.CacheClear, "clear", false, "clear cache")
+	flags.StringVar(&c.Config.DiffTool, "difftool", "", "alternate diff tool")
 	flags.BoolVar(&showVersion, "version", false, "show version info")
 
 	err = flags.Parse(c.Args[1:])

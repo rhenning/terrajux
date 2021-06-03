@@ -81,7 +81,10 @@ func NewDefaultWiring(config *terrajux.Config) (app *App, err error) {
 	app.Terraform = terraform.NewCLI()
 	app.Cache = cache.New(config.CacheDir)
 
-	dr, err := diff.NewRunner(&diff.RunnerOptions{})
+	dr, err := diff.NewRunner(&diff.RunnerOptions{
+		CommandTemplate: config.DiffTool,
+	})
+
 	app.Diff = *dr
 
 	return app, err

@@ -16,9 +16,12 @@ type Config struct {
 	Name       string
 	Version    string
 	ProjectURL string
+
 	DataDir    string
 	CacheDir   string
 	CacheClear bool
+	DiffTool   string
+
 	GitURL     string
 	GitRefV1   string
 	GitRefV2   string
