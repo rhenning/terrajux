@@ -7,9 +7,6 @@
       improve tests and avoid calling code with side effects
     * abstract external command executor via its own package
 * delivery
-    * consider github actions after better mocks & stubs
-    * consider goreleaser for build/release management
-    * test, vet, fmt, static analysis checks
     * homebrew
 * documentation
     * use concrete example based on fixtures in "try it"
@@ -17,8 +14,6 @@
     * named return values on all functions
     * consider additional documentation
     * contributing guidelines
-    * github metadata files
-    * FAQ
 * configuration
     * expose configuration overrides (difftool, terraform) to user
 * errors

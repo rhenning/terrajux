@@ -4,18 +4,25 @@ builds:
     goos:
       - linux
       - darwin
-      # win support is not quite there yet
+      - freebsd
+      - openbsd
+      - solaris
+      ## windows support is still iffy
       #- windows
     main: ./cmd/terrajux
     ldflags: -s -w -X github.com/rhenning/terrajux.Version={{.Version}}
 archives:
-  ## may enable these, but leaving disabled atm to align w/ terraform
-  # - replacements:
-  #     darwin: Darwin
-  #     linux: Linux
-  #     windows: Windows
-  #     386: i386
-  #     amd64: x86_64
+  - wrap_in_directory: true
+    format_overrides:
+      - goos: windows
+        format: zip
+    ## may enable these, but leaving disabled atm to align w/ terraform
+    # - replacements:
+    #     darwin: Darwin
+    #     linux: Linux
+    #     windows: Windows
+    #     386: i386
+    #     amd64: x86_64
 checksum:
   name_template: 'checksums.txt'
 snapshot:
