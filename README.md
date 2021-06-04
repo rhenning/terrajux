@@ -1,10 +1,10 @@
 # terrajux
+[![build-status](https://img.shields.io/github/workflow/status/rhenning/terrajux/test/main?style=for-the-badge)](https://github.com/rhenning/terrajux/actions/workflows/test.yml?query=workflow%3Atest+branch%3Amain)
+[![current-release](https://img.shields.io/github/release/rhenning/terrajux.svg?style=for-the-badge)](https://github.com/rhenning/terrajux/releases/latest)
+[![semantic-release-info](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=for-the-badge)](https://github.com/semantic-release/semantic-release)
+[![license-info](https://img.shields.io/github/license/rhenning/terrajux?style=for-the-badge)](https://www.apache.org/licenses/LICENSE-2.0)
 
-[![License](https://img.shields.io/github/license/rhenning/terrajux?style=for-the-badge)](LICENSE)
-[![Release](https://img.shields.io/github/release/rhenning/terrajux.svg?style=for-the-badge)](https://github.com/rhenning/terrajux/releases/latest)
-![Build](https://img.shields.io/github/workflow/status/rhenning/terrajux/test/main?style=for-the-badge)
 <!--
-[![Build status](https://img.shields.io/github/workflow/rhenning/terrajux/build?style=for-the-badge)](https://github.com/rhenning/terrajux/actions?workflow=build)
 [![Codecov branch](https://img.shields.io/codecov/c/github/rhenning/terrajux/main.svg?style=for-the-badge)](https://codecov.io/gh/rhenning/terrajux)
 [![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge)](http://godoc.org/github.com/rhenning/terrajux)
 -->
