@@ -10,14 +10,28 @@
 -->
 
 `terrajux` [diff](https://en.wikipedia.org/wiki/Diff)s the source code of a
-[Terraform](https://github.com/hashicorp/terraform)
+[terraform](https://github.com/hashicorp/terraform)
 [root module](https://www.terraform.io/docs/language/modules/index.html#the-root-module) project,
 along with the source of all its transitive module dependencies, between two git refs.
 
 
 ## how?
 
-try it!
+- ensure that `terraform` and `git` are installed and available in your system's `PATH`.
+- download the [latest release archive](https://github.com/rhenning/terrajux/releases/)
+  named for the os and arch appropriate for your system.
+- decompress and extract the archive.
+  - `tar -zxvf terrajux_<version>_<os>_<arch>.tar.gz` will do on many systems.
+- `terrajux` is distributed as a self-contained binary. simply move the `terrajux`
+  binary to a location of your choosing. for many, this will be somewhere in your
+  system's `PATH` such as `/usr/local/bin/` or `~/bin/`.
+- on macos it may be necessary to explictly inform the system that `terrajux` is
+  an approved program.
+  - navigate to the directory containing `terrajux` via terminal or finder.
+  - run `open .` if using the terminal.
+  - right-click on `terrajux` and select **open**.
+
+**try it!**
 
 ```
 terrajux giturl v1ref v2ref [subpath]
@@ -83,6 +97,26 @@ also, many of the tools intended for use within the terraform ecosystem have nam
 
 _juxtapose_ popped into my head while considering the possibilities, and so we have `terrajux`.
 
+
 ## license
 
 this project is released under the [apache 2.0 license](LICENSE).
+
+
+## faq
+
+> what is happening behind the scenes?
+
+in short, `terrajux`:
+- performs shallow clones of the the specified git repository at
+  the supplied refs
+- initializes terraform with `-backend=false` to download all module
+  dependencies without touching the terraform state backend
+- displays a recursive diff of the initialized projects
+
+
+> what platforms are supported?
+
+- macos and linux builds are fully tested for every pr and release
+- *bsd and solaris builds are untested but _should_ work
+- windows builds are disabled pending [some portability issues](https://github.com/rhenning/terrajux/issues)
