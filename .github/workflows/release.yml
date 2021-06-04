@@ -3,15 +3,38 @@ name: release
 
 on:
   workflow_run:
-    workflows: ["test"]
+    workflows: [test]
     branches: [main]
-    types:
-      - completed
+    types: [completed]
 
 jobs:
-  release:
+  changes:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
 
+    outputs:
+      gosrc: ${{ steps.filter.outputs.gosrc }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: filter-src
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            gosrc:
+              - '**/*.go'
+              - 'go.mod'
+              - 'go.sum'
+
+  release:
+    needs: changes
+
+    if: ${{ needs.changes.outputs.gosrc == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -25,11 +48,16 @@ jobs:
         with:
           go-version: 1.16.x
 
+      - name: tag
+        uses: mathieudutour/github-tag-action@v5.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: goreleaser
         uses: goreleaser/goreleaser-action@v2
         with:
           distribution: goreleaser
           version: latest
-          args: release --rm-dist --skip-publish
+          args: release --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
