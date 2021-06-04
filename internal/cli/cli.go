@@ -68,7 +68,7 @@ func (c *CLI) ParseArgs() (message string, err error) {
 
 	flags.SetOutput(&buf)
 
-	flags.BoolVar(&c.Config.CacheClear, "clear", false, "clear cache")
+	flags.BoolVar(&c.Config.CacheClear, "clearcache", false, "purge the checkout and module cache")
 	flags.BoolVar(&showVersion, "version", false, "show version info")
 	flags.StringVar(
 		&c.Config.DiffTool,

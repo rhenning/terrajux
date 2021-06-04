@@ -58,7 +58,7 @@ func (a *App) Run() (err error) {
 				return err
 			}
 		} else {
-			fmt.Printf("Found %v @%v in cache. Skipping clone.\n", a.Config.GitURL, v)
+			fmt.Printf("Found %v@%v in cache. Skipping clone.\n", a.Config.GitURL, v)
 		}
 	}
 
@@ -85,11 +85,11 @@ func NewDefaultWiring(config *terrajux.Config) (app *App, err error) {
 	app.Terraform = terraform.NewCLI()
 	app.Cache = cache.New(config.CacheDir)
 
-	dr, err := diff.NewRunner(&diff.RunnerOptions{
+	difftool, err := diff.NewTool(&diff.ToolOptions{
 		CommandTemplate: config.DiffTool,
 	})
 
-	app.Diff = *dr
+	app.Diff = difftool
 
 	return app, err
 }

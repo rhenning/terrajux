@@ -26,16 +26,20 @@ var (
 	}
 )
 
-type RunnerOptions struct {
+type ToolOptions struct {
 	Dir             string
 	Shell           string
 	CommandTemplate string
 }
 
-type Runner struct {
-	Options *RunnerOptions
+type Tool struct {
+	Options *ToolOptions
 	ct      *template.Template
 	command string
+}
+
+type Runner interface {
+	Run(v1path string, v2path string) error
 }
 
 type commandTemplateArgs struct {
@@ -43,9 +47,9 @@ type commandTemplateArgs struct {
 	V2 string
 }
 
-func NewRunner(opts *RunnerOptions) (*Runner, error) {
-	runner := &Runner{
-		Options: &RunnerOptions{
+func NewTool(opts *ToolOptions) (*Tool, error) {
+	tool := &Tool{
+		Options: &ToolOptions{
 			Dir:             opts.Dir,
 			Shell:           defaultShell,
 			CommandTemplate: strings.Join(defaultCommandTemplate, " "),
@@ -53,35 +57,35 @@ func NewRunner(opts *RunnerOptions) (*Runner, error) {
 	}
 
 	if opts.Shell != "" {
-		runner.Options.Shell = opts.Shell
+		tool.Options.Shell = opts.Shell
 	}
 
 	if opts.CommandTemplate != "" {
-		runner.Options.CommandTemplate = opts.CommandTemplate
+		tool.Options.CommandTemplate = opts.CommandTemplate
 	}
 
-	ct, err := template.New("diffcmd").Parse(runner.Options.CommandTemplate)
-	runner.ct = ct
+	ct, err := template.New("diffcmd").Parse(tool.Options.CommandTemplate)
+	tool.ct = ct
 
-	return runner, err
+	return tool, err
 }
 
-func (c *Runner) Run(v1path string, v2path string) error {
+func (tool *Tool) Run(v1path string, v2path string) error {
 	for _, p := range []string{v1path, v2path} {
-		dirp := filepath.Join(c.Options.Dir, p)
+		dirp := filepath.Join(tool.Options.Dir, p)
 
 		if _, err := os.Stat(dirp); err != nil {
 			return err
 		}
 	}
 
-	if err := c.formatCommand(v1path, v2path); err != nil {
+	if err := tool.formatCommand(v1path, v2path); err != nil {
 		return err
 	}
 
-	cmd := exec.Command(c.Options.Shell, "-c", c.command)
+	cmd := exec.Command(tool.Options.Shell, "-c", tool.command)
 
-	cmd.Dir = c.Options.Dir
+	cmd.Dir = tool.Options.Dir
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -97,7 +101,7 @@ func (c *Runner) Run(v1path string, v2path string) error {
 	return err
 }
 
-func (c *Runner) formatCommand(v1path string, v2path string) error {
+func (c *Tool) formatCommand(v1path string, v2path string) error {
 	ctargs := commandTemplateArgs{v1path, v2path}
 	var command bytes.Buffer
 

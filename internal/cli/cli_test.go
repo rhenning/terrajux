@@ -82,9 +82,9 @@ func TestCLI_ParseArgs(t *testing.T) {
 			},
 		},
 		{
-			name: "clearflag+okargs+subpath",
+			name: "clearcacheflag+okargs+subpath",
 			fields: fields{
-				Args:   []string{"terrajux", "-clear", "url", "v1", "v2", "sub/p"},
+				Args:   []string{"terrajux", "-clearcache", "url", "v1", "v2", "sub/p"},
 				Config: &terrajux.Config{},
 			},
 

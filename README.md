@@ -120,3 +120,41 @@ in short, `terrajux`:
 - macos and linux builds are fully tested for every pr and release
 - *bsd and solaris builds are untested but _should_ work
 - windows builds are disabled pending [some portability issues](https://github.com/rhenning/terrajux/issues)
+
+
+> how can i use ________ to view the diff?
+
+try the `-difftool` option.
+
+`-difftool` accepts a [go template](https://golang.org/pkg/text/template/) that
+can be used to format commands for an alternative diff viewer. the strings
+`{{.V1}}` and `{{.V2}}` will be replaced by the `v1ref` and `v2ref` args
+supplied to `terrajux` at runtime.
+
+to use the [compare folders plugin](https://marketplace.visualstudio.com/items?itemName=moshfeu.compare-folders)
+in [vs code](https://code.visualstudio.com/), for example, try:
+
+```
+-difftool 'COMPARE_FOLDERS=DIFF code {{.V1}} {{.V2}}'
+```
+
+to avoid typing this every time, consider creating an alias in
+[your shell's profile](https://en.wikipedia.org/wiki/Unix_shell#Configuration_files),
+such as:
+
+```
+alias terrajux="terrajux -difftool 'opendiff {{.V1}} {{.V2}}'"
+```
+
+
+> i'm seeing a stale diff for a branch ref or getting strange errors during
+  initialization. what gives?
+
+try clearing the cache with the `-clearcache` option.
+
+`terrajux` keeps a local cache of checkouts and initialized terraform modules
+to speed up subsequent diffs of long-lived release tags. the cache key is a
+concatentation of git url (sans scheme) and ref. when diffing dynamic refs
+such as branches (or a tag that has been deleted and repointed), the cache entry
+may be stale. you'll know this is the case if output displays something like
+`Found <repo>@<ref> in cache. Skipping clone.`
