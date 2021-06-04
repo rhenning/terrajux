@@ -82,9 +82,9 @@ func TestCLI_ParseArgs(t *testing.T) {
 			},
 		},
 		{
-			name: "clearflag+okargs+subpath",
+			name: "clearcacheflag+okargs+subpath",
 			fields: fields{
-				Args:   []string{"terrajux", "-clear", "url", "v1", "v2", "sub/p"},
+				Args:   []string{"terrajux", "-clearcache", "url", "v1", "v2", "sub/p"},
 				Config: &terrajux.Config{},
 			},
 
@@ -95,6 +95,27 @@ func TestCLI_ParseArgs(t *testing.T) {
 				GitRefV1:   "v1",
 				GitRefV2:   "v2",
 				GitSubpath: "sub/p",
+			},
+		},
+		{
+			name: "difftoolflag+okargs",
+			fields: fields{
+				Args: []string{
+					"terrajux",
+					"-difftool",
+					"opendiff {{.V1}} {{.V2}}",
+					"foo", "bar", "baz",
+				},
+				Config: &terrajux.Config{},
+			},
+
+			wantConfigValue: &terrajux.Config{
+				DiffTool:   "opendiff {{.V1}} {{.V2}}",
+				CacheClear: false,
+				GitURL:     "foo",
+				GitRefV1:   "bar",
+				GitRefV2:   "baz",
+				GitSubpath: "",
 			},
 		},
 		{

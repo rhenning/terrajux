@@ -44,8 +44,12 @@ func (a *App) Run() (err error) {
 		}
 	}
 
+	if err = os.Chdir(a.Config.CacheDir); err != nil {
+		return err
+	}
+
 	for i, v := range []string{a.Config.GitRefV1, a.Config.GitRefV2} {
-		dir := filepath.Join(a.Config.CacheDir, git.URLPath(a.Config.GitURL, v))
+		dir := git.URLPath(a.Config.GitURL, v)
 		clonedirs[i] = dir
 
 		if _, err := os.Stat(dir); os.IsNotExist(err) {
@@ -54,7 +58,7 @@ func (a *App) Run() (err error) {
 				return err
 			}
 		} else {
-			fmt.Printf("Found %v @%v in cache. Skipping clone.\n", a.Config.GitURL, v)
+			fmt.Printf("Found %v@%v in cache. Skipping clone.\n", a.Config.GitURL, v)
 		}
 	}
 
@@ -81,8 +85,11 @@ func NewDefaultWiring(config *terrajux.Config) (app *App, err error) {
 	app.Terraform = terraform.NewCLI()
 	app.Cache = cache.New(config.CacheDir)
 
-	dr, err := diff.NewRunner(&diff.RunnerOptions{})
-	app.Diff = *dr
+	difftool, err := diff.NewTool(&diff.ToolOptions{
+		CommandTemplate: config.DiffTool,
+	})
+
+	app.Diff = difftool
 
 	return app, err
 }
