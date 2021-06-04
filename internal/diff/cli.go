@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -26,6 +27,7 @@ var (
 )
 
 type RunnerOptions struct {
+	Dir             string
 	Shell           string
 	CommandTemplate string
 }
@@ -44,6 +46,7 @@ type commandTemplateArgs struct {
 func NewRunner(opts *RunnerOptions) (*Runner, error) {
 	runner := &Runner{
 		Options: &RunnerOptions{
+			Dir:             opts.Dir,
 			Shell:           defaultShell,
 			CommandTemplate: strings.Join(defaultCommandTemplate, " "),
 		},
@@ -65,7 +68,9 @@ func NewRunner(opts *RunnerOptions) (*Runner, error) {
 
 func (c *Runner) Run(v1path string, v2path string) error {
 	for _, p := range []string{v1path, v2path} {
-		if _, err := os.Stat(p); err != nil {
+		dirp := filepath.Join(c.Options.Dir, p)
+
+		if _, err := os.Stat(dirp); err != nil {
 			return err
 		}
 	}
@@ -76,6 +81,7 @@ func (c *Runner) Run(v1path string, v2path string) error {
 
 	cmd := exec.Command(c.Options.Shell, "-c", c.command)
 
+	cmd.Dir = c.Options.Dir
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

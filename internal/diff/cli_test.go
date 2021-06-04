@@ -16,6 +16,20 @@ func TestNewRunner(t *testing.T) {
 	assert.Equal("/bin/sh", dr.Options.Shell, "NewRunner() should use /bin/sh by default")
 }
 
+func TestNewRunnerWithOptions(t *testing.T) {
+	t.Parallel()
+	assert := assert.New(t)
+
+	dr, err := NewRunner(&RunnerOptions{
+		Dir:   "/tmp/foo",
+		Shell: "/usr/local/bin/zsh",
+	})
+
+	assert.NoError(err, "NewRunner() should not error with options")
+	assert.Equal("/usr/local/bin/zsh", dr.Options.Shell, "NewRunner() should use Shell override")
+	assert.Equal("/tmp/foo", dr.Options.Dir, "NewRunner() should use Dir override")
+}
+
 func TestDiffRun(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
@@ -25,6 +39,19 @@ func TestDiffRun(t *testing.T) {
 	assert.NoError(err, "NewRunner() should not error")
 
 	err = dr.Run("testdata/a", "testdata/b")
+
+	assert.NoError(err, "Runner.Run(v1, v2) should not error")
+}
+
+func TestDiffRunInDir(t *testing.T) {
+	t.Parallel()
+	assert := assert.New(t)
+
+	dr, err := NewRunner(&RunnerOptions{Dir: "testdata"})
+
+	assert.NoError(err, "NewRunner() should not error")
+
+	err = dr.Run("a", "b")
 
 	assert.NoError(err, "Runner.Run(v1, v2) should not error")
 }

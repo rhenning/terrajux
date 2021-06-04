@@ -26,7 +26,7 @@ $(DISTDIR)/$(TARGET): $(DISTDIR) $(SOURCES) test
 
 clean:
 	$(GOCLEAN) $(VERBOSE)
-	$(GOCLEAN) $(VERBOSE) -modcache -testcache
+	$(GOCLEAN) $(VERBOSE) -testcache
 	rm -rf $(DISTDIR)/
 
 tools:

@@ -69,8 +69,13 @@ func (c *CLI) ParseArgs() (message string, err error) {
 	flags.SetOutput(&buf)
 
 	flags.BoolVar(&c.Config.CacheClear, "clear", false, "clear cache")
-	flags.StringVar(&c.Config.DiffTool, "difftool", "", "alternate diff tool")
 	flags.BoolVar(&showVersion, "version", false, "show version info")
+	flags.StringVar(
+		&c.Config.DiffTool,
+		"difftool",
+		"",
+		"diff command `template`, e.g. 'opendiff {{.V1}} {{.V2}}'",
+	)
 
 	err = flags.Parse(c.Args[1:])
 

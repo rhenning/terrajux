@@ -98,6 +98,27 @@ func TestCLI_ParseArgs(t *testing.T) {
 			},
 		},
 		{
+			name: "difftoolflag+okargs",
+			fields: fields{
+				Args: []string{
+					"terrajux",
+					"-difftool",
+					"opendiff {{.V1}} {{.V2}}",
+					"foo", "bar", "baz",
+				},
+				Config: &terrajux.Config{},
+			},
+
+			wantConfigValue: &terrajux.Config{
+				DiffTool:   "opendiff {{.V1}} {{.V2}}",
+				CacheClear: false,
+				GitURL:     "foo",
+				GitRefV1:   "bar",
+				GitRefV2:   "baz",
+				GitSubpath: "",
+			},
+		},
+		{
 			name: "badflag",
 			fields: fields{
 				Args:   []string{"terrajux", "-bad=jawn", "url", "v1", "v2", "sub/p"},
