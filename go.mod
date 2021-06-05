@@ -12,7 +12,9 @@ require (
 	github.com/kevinburke/ssh_config v1.1.0 // indirect
 	github.com/matryer/is v1.4.0 // indirect
 	github.com/mattn/go-zglob v0.0.0-20180803001819-2ea3427bfa53 // indirect
+	github.com/securego/gosec/v2 v2.8.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
+	github.com/spf13/cobra v1.1.3 // indirect
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/crypto v0.0.0-20210506145944-38f3c27a63bf // indirect
 	golang.org/x/net v0.0.0-20210505214959-0714010a04ed // indirect
