@@ -19,6 +19,10 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
+    files:
+      - README*
+      - LICENSE*
+      - CHANGELOG*
     ## may enable these, but leaving disabled atm to align w/ terraform
     # - replacements:
     #     darwin: Darwin
@@ -26,13 +30,17 @@ archives:
     #     windows: Windows
     #     386: i386
     #     amd64: x86_64
+
 checksum:
   name_template: 'checksums.txt'
+
 snapshot:
   name_template: "{{.Tag}}-snapshot-{{.Timestamp}}-{{.ShortCommit}}"
+
 changelog:
   sort: asc
   filters:
-    exclude:
-      - '^docs:'
-      - '^test:'
+    include:
+      - '^fix:'
+      - '^feat:'
+      - '^perf:'

@@ -1,13 +1,20 @@
-# terrajux
 [![build-status](https://img.shields.io/github/workflow/status/rhenning/terrajux/test/main?style=for-the-badge)](https://github.com/rhenning/terrajux/actions/workflows/test.yml?query=workflow%3Atest+branch%3Amain)
 [![current-release](https://img.shields.io/github/release/rhenning/terrajux.svg?style=for-the-badge)](https://github.com/rhenning/terrajux/releases/latest)
-[![semantic-release-info](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=for-the-badge)](https://github.com/semantic-release/semantic-release)
-[![license-info](https://img.shields.io/github/license/rhenning/terrajux?style=for-the-badge)](https://www.apache.org/licenses/LICENSE-2.0)
+[![license-info](https://img.shields.io/github/license/rhenning/terrajux?style=for-the-badge&color=orange)](https://www.apache.org/licenses/LICENSE-2.0)
+
+[![pb-goreleaser](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-goreleaser-hotpink.svg?style=for-the-badge)](https://github.com/goreleaser)
+[![pb-semanticrelease](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-hotpink.svg?style=for-the-badge)](https://github.com/semantic-release/semantic-release)
+[![pb-staticcheck](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-staticcheck-hotpink.svg?style=for-the-badge)](https://staticcheck.io/)
+
 
 <!--
 [![Codecov branch](https://img.shields.io/codecov/c/github/rhenning/terrajux/main.svg?style=for-the-badge)](https://codecov.io/gh/rhenning/terrajux)
 [![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge)](http://godoc.org/github.com/rhenning/terrajux)
 -->
+
+---
+
+# terrajux
 
 `terrajux` [diff](https://en.wikipedia.org/wiki/Diff)s the source code of a
 [terraform](https://github.com/hashicorp/terraform)
@@ -98,11 +105,6 @@ also, many of the tools intended for use within the terraform ecosystem have nam
 _juxtapose_ popped into my head while considering the possibilities, and so we have `terrajux`.
 
 
-## license
-
-this project is released under the [apache 2.0 license](LICENSE).
-
-
 ## faq
 
 > what is happening behind the scenes?
@@ -158,3 +160,26 @@ concatentation of git url (sans scheme) and ref. when diffing dynamic refs
 such as branches (or a tag that has been deleted and repointed), the cache entry
 may be stale. you'll know this is the case if output displays something like
 `Found <repo>@<ref> in cache. Skipping clone.`
+
+
+> how do i report a bug?
+
+woops, sorry about that! please [submit a bug report](https://github.com/rhenning/terrajux/issues/new/choose).
+
+
+> how do i request a feature?
+
+please [submit a feature request](https://github.com/rhenning/terrajux/issues/new/choose) to start the conversation. once that's done, we can work on it or
+consider [pull requests](https://github.com/rhenning/terrajux/pulls).
+
+
+> how can i contribute (documentation, code, resources, etc.)?
+
+awesome! your kindness is very much appreciated. please
+[check out the contribution guidelines](https://github.com/rhenning/terrajux/contribute)
+for more information.
+
+
+## license
+
+this project is released under the [apache 2.0 license](LICENSE).
