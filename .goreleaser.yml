@@ -40,7 +40,5 @@ snapshot:
 changelog:
   sort: asc
   filters:
-    include:
-      - '^fix:'
-      - '^feat:'
-      - '^perf:'
+    exclude:
+      - '^(?!(?:fix|feat|perf):\s+)'
