@@ -4,7 +4,7 @@
 
 [![pb-goreleaser](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-goreleaser-hotpink.svg?style=for-the-badge)](https://github.com/goreleaser)
 [![pb-semanticrelease](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-hotpink.svg?style=for-the-badge)](https://github.com/semantic-release/semantic-release)
-[![pb-staticcheck](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-staticcheck-hotpink.svg?style=for-the-badge)](https://staticcheck.io/)
+[![pb-golangcilint](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-golangci--lint-hotpink.svg?style=for-the-badge)](https://golangci-lint.run/)
 [![pb-gosec](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-gosec-hotpink.svg?style=for-the-badge)](https://securego.io/)
 
 
