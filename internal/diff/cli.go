@@ -28,6 +28,7 @@ var (
 
 type ToolOptions struct {
 	Dir             string
+	Env             []string
 	Shell           string
 	CommandTemplate string
 }
@@ -83,8 +84,11 @@ func (tool *Tool) Run(v1path string, v2path string) error {
 		return err
 	}
 
-	cmd := exec.Command(tool.Options.Shell, "-c", tool.command)
+	// tool command template is directly supplied by the user, who can run
+	// arbitrary programs on the system as-is.
+	cmd := exec.Command(tool.Options.Shell, "-c", tool.command) // #nosec G204
 
+	cmd.Env = tool.Options.Env
 	cmd.Dir = tool.Options.Dir
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout

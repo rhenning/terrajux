@@ -18,7 +18,7 @@ func New(dirpath string) *Cache {
 }
 
 func (c *Cache) Ensure() error {
-	return os.MkdirAll(c.Dir, 0755)
+	return os.MkdirAll(c.Dir, 0750)
 }
 
 func (c *Cache) Clear() error {
