@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"testing"
 )
 
@@ -61,4 +62,26 @@ func WriteFile(t *testing.T, fpath string, content string) error {
 	_, err = f.WriteString(content)
 
 	return err
+}
+
+// rewrite this to use an interface for the collection and reflection
+func ContainsRegexp(c []string, r *regexp.Regexp) bool {
+	return containsRegexp(c, r)
+}
+
+func NotContainsRegexp(c []string, r *regexp.Regexp) bool {
+	return !containsRegexp(c, r)
+}
+
+func containsRegexp(c []string, r *regexp.Regexp) bool {
+	var hasmatch bool
+
+	for i := range c {
+		if r.MatchString(c[i]) {
+			hasmatch = true
+			break
+		}
+	}
+
+	return hasmatch
 }

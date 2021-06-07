@@ -18,10 +18,23 @@ MAIN = $(CMDDIR)/$(TARGET)/main.go
 SOURCES = $(wildcard **/*.go)
 GOFMTL = $(shell $(GOFMT) -l .)
 
-.PHONY: tools clean tidy test unit static snapshot release check
+.PHONY: tools clean tidy test unit static snapshot release check mod-outdated help
 
 # don't `tidy` by default or `tools` will break
 all: check clean tools test build
+
+help:
+	# all:          do the needful (default, try this first)
+	# check:        pre-flight check
+	# clean:        clean up targets, object code, test cache, etc.
+	# tidy:         go mod tidy
+	# tools:        install packages needed for test and release
+	# test:         run all tests
+	# unit:         run go test
+	# static:       run static analysis tests (lint, security, etc.)
+	# snapshot:     build a release snapshot of the current working directory
+	# release:      build a release from the tag of the current checkout
+	# mod-outdated:	list direct module dependencies with available upgrades
 
 check:
 ifeq ($(strip $(DISTDIR)),)
@@ -43,12 +56,12 @@ clean: check
 tools: check $(DISTDIR)/tools-stamp
 
 $(DISTDIR)/tools-stamp: $(DISTDIR)
-	$(GOINSTALL) $(VERBOSE) github.com/securego/gosec/v2/cmd/gosec
+	$(GOINSTALL) $(VERBOSE) github.com/securego/gosec/v2/cmd/gosec@latest
 ifneq ($(strip $(CI)),true)
-	$(GOINSTALL) $(VERBOSE) github.com/goreleaser/goreleaser
-	$(GOINSTALL) $(VERBOSE) honnef.co/go/tools/cmd/staticcheck
+	$(GOINSTALL) $(VERBOSE) github.com/goreleaser/goreleaser@latest
+	$(GOINSTALL) $(VERBOSE) github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 else
-	$(warning CI=$(CI): skip installing staticcheck+goreleaser, will run as GitHub Action)
+	$(warning CI=$(CI): skip installing golangci-lint+goreleaser, will run as GitHub Action)
 endif
 	touch $@
 
@@ -59,9 +72,9 @@ ifneq ($(strip $(GOFMTL)),)
 	$(error invalid formatting detected. please run `go fmt ./...`)
 endif
 ifneq ($(strip $(CI)),true)
-	golangci-lint run || staticcheck ./...
+	golangci-lint run
 else
-	$(warning CI=$(CI): skip golangci-lint+staticcheck, will run as GitHub Action)
+	$(warning CI=$(CI): skip golangci-lint, will run as GitHub Action)
 endif
 	gosec ./...
 
@@ -78,3 +91,6 @@ release: tools $(SOURCES)
 
 snapshot: tools $(SOURCES)
 	goreleaser --snapshot --rm-dist
+
+mod-outdated:
+	go list -u -m -f '{{if not .Indirect}}{{.}}{{end}}' all
