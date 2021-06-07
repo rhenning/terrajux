@@ -1,8 +1,14 @@
 package diff
 
 import (
+	"fmt"
+	"math/rand"
+	"os"
+	"regexp"
+	"strconv"
 	"testing"
 
+	th "github.com/rhenning/terrajux/internal/testhelp"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -76,19 +82,43 @@ func TestToolCommand(t *testing.T) {
 	tool, err := NewTool(&ToolOptions{
 		// nonportable: eventually inject a mock command runner
 		Shell:           "/bin/bash",
-		CommandTemplate: "echo -v2={{.V2}} -v1 {{.V1}}",
+		CommandTemplate: "HISTFILE=/dev/null echo -v2={{.V2}} -v1 {{.V1}}",
 	})
 
 	assert.NoErrorf(err, "NewTool() should not error")
 
+	testevk := fmt.Sprintf("SEKRET%s", strconv.Itoa(rand.Int()))
+
+	if err = os.Setenv(testevk, "flibbertygibbets"); err != nil {
+		t.Logf("Couldn't set test environment var %s: %v", testevk, err)
+	}
+
+	defer func() {
+		if derr := os.Unsetenv(testevk); derr != nil {
+			err = derr
+			fmt.Printf("%+v\n", err)
+		}
+	}()
+
 	err = tool.formatCommand("foo", "bar")
 
 	assert.NoError(err, "Tool.formatCommand() should not error")
-	assert.Equal("echo -v2=bar -v1 foo", tool.command, "Tool.formatCommand() should correctly format")
+	assert.Equal(
+		"HISTFILE=/dev/null echo -v2='bar' -v1 'foo'",
+		tool.command,
+		"Tool.formatCommand() should correctly format and quote params",
+	)
 
 	err = tool.Run("testdata/a", "testdata/b")
 
 	assert.NoError(err, "Tool.Run(v1, v2) should not error")
+	assert.Falsef(
+		th.ContainsRegexp(
+			tool.Options.Env,
+			regexp.MustCompile(fmt.Sprintf("^%s=", testevk)),
+		),
+		"",
+	)
 }
 
 func TestFormatCommandError(t *testing.T) {
@@ -97,7 +127,7 @@ func TestFormatCommandError(t *testing.T) {
 
 	tool, err := NewTool(&ToolOptions{
 		Shell:           "/bin/foo",
-		CommandTemplate: "test {{ .BadTemplate }}",
+		CommandTemplate: "test {{.BadTemplate}}",
 	})
 
 	assert.NoErrorf(err, "NewTool() should not error")
