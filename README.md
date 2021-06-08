@@ -1,5 +1,6 @@
-[![build-status](https://img.shields.io/github/workflow/status/rhenning/terrajux/test/main?style=for-the-badge)](https://github.com/rhenning/terrajux/actions/workflows/test.yml?query=workflow%3Atest+branch%3Amain)
 [![current-release](https://img.shields.io/github/release/rhenning/terrajux.svg?style=for-the-badge)](https://github.com/rhenning/terrajux/releases/latest)
+[![build-status](https://img.shields.io/github/workflow/status/rhenning/terrajux/test/main?style=for-the-badge)](https://github.com/rhenning/terrajux/actions/workflows/test.yml?query=workflow%3Atest+branch%3Amain)
+[![report-card](https://goreportcard.com/badge/github.com/rhenning/terrajux?style=for-the-badge)](https://goreportcard.com/report/github.com/rhenning/terrajux)
 [![license-info](https://img.shields.io/github/license/rhenning/terrajux?style=for-the-badge&color=orange)](https://www.apache.org/licenses/LICENSE-2.0)
 
 [![pb-goreleaser](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-goreleaser-hotpink.svg?style=for-the-badge)](https://github.com/goreleaser)
