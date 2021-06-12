@@ -83,8 +83,10 @@ using the wrong version of terraform locally? i have. don't do that.
 `terrajux` is primarily aimed at site reliability and infrastructure engineers managing systems
 built from nested terraform modules spread across many repositories.
 
-it is maintained by [rich henning](https://github.com/rhenning), a software engineer living and
+it is maintained primarily by [rich henning](https://github.com/rhenning), a software engineer living and
 working in philadelphia.
+
+[@mdb](https://github.com/mdb) also contributes to this project and created [terrajux-action](https://github.com/mdb/terrajux-action), which facilitates the use of `terrajux` in a [GitHub Actions](https://github.com/features/actions) workflow.
 
 
 ## why "terrajux"?
@@ -152,7 +154,7 @@ alias terrajux="terrajux -difftool 'opendiff {{.V1}} {{.V2}}'"
 
 > is it possible to use this in GitHub's pull request workflow?
 
-sure! please check out @mdb's [terrajux-action](github.com/mdb/terrajux-action) for [GitHub Actions](https://github.com/features/actions).
+sure! please check out [@mdb](https://github.com/mdb)'s [terrajux-action](github.com/mdb/terrajux-action) for [GitHub Actions](https://github.com/features/actions).
 
 > i'm seeing a stale diff for a branch ref or getting strange errors during
   initialization. what gives?
@@ -184,9 +186,6 @@ awesome! your kindness is very much appreciated. please
 [check out the contribution guidelines](https://github.com/rhenning/terrajux/contribute)
 for more information.
 
-## friends
-
-- @mdb contributes to this project and created [terrajux-action](https://github.com/mdb/terrajux-action), which facilitates the use of `terrajux` in a [GitHub Actions](https://github.com/features/actions) workflow.
 
 ## license
 
