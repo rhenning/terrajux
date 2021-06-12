@@ -27,7 +27,7 @@ func New() *Git {
 
 func (g *Git) Clone(url string, ref string, dir string) error {
 	// is the ref a fully qualified ref such as 'refs/tags/<ref>'?
-	if strings.Contains(ref, "/") {
+	if strings.HasPrefix(ref, "refs/") {
 		opts := g.mkCloneOptions(url, plumbing.ReferenceName(ref))
 		_, err := git.PlainClone(dir, cloneBare, opts)
 		if err != nil {

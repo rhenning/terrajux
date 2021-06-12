@@ -74,6 +74,15 @@ func TestGit_Clone(t *testing.T) {
 				dir: th.CreateTempDir(t),
 			},
 		},
+		{
+			name:        "nonexistent reference containg '/'",
+			expectedErr: errors.New("couldn't find remote ref \"refs/tags/foo/master\""),
+			args: args{
+				url: "https://github.com/terraform-aws-modules/terraform-aws-iam.git",
+				ref: "foo/master",
+				dir: th.CreateTempDir(t),
+			},
+		},
 	}
 	for _, tt := range tests {
 		// capture range variable for t.Parallel()
