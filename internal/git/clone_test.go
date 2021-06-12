@@ -1,6 +1,7 @@
 package git
 
 import (
+	"errors"
 	"os"
 	"testing"
 
@@ -15,11 +16,13 @@ func TestGit_Clone(t *testing.T) {
 		dir string
 	}
 	tests := []struct {
-		name string
-		args args
+		name        string
+		expectedErr error
+		args        args
 	}{
 		{
-			name: "branch",
+			name:        "branch",
+			expectedErr: nil,
 			args: args{
 				url: "https://github.com/terraform-aws-modules/terraform-aws-iam.git",
 				ref: "master",
@@ -27,10 +30,47 @@ func TestGit_Clone(t *testing.T) {
 			},
 		},
 		{
-			name: "tag",
+			name:        "fully qualified branch reference",
+			expectedErr: nil,
+			args: args{
+				url: "https://github.com/terraform-aws-modules/terraform-aws-iam.git",
+				ref: "refs/heads/master",
+				dir: th.CreateTempDir(t),
+			},
+		},
+		{
+			name:        "nonexistent fully qualified branch reference",
+			expectedErr: errors.New("couldn't find remote ref \"refs/heads/foo\""),
+			args: args{
+				url: "https://github.com/terraform-aws-modules/terraform-aws-iam.git",
+				ref: "refs/heads/foo",
+				dir: th.CreateTempDir(t),
+			},
+		},
+		{
+			name:        "tag",
+			expectedErr: nil,
 			args: args{
 				url: "https://github.com/go-git/go-git.git",
 				ref: "v4.0.0",
+				dir: th.CreateTempDir(t),
+			},
+		},
+		{
+			name:        "fully qualified tag reference",
+			expectedErr: nil,
+			args: args{
+				url: "https://github.com/go-git/go-git.git",
+				ref: "refs/tags/v4.0.0",
+				dir: th.CreateTempDir(t),
+			},
+		},
+		{
+			name:        "nonexistent fully qualified tag reference",
+			expectedErr: errors.New("couldn't find remote ref \"refs/tags/v2000.0.0\""),
+			args: args{
+				url: "https://github.com/go-git/go-git.git",
+				ref: "refs/tags/v2000.0.0",
 				dir: th.CreateTempDir(t),
 			},
 		},
@@ -47,7 +87,13 @@ func TestGit_Clone(t *testing.T) {
 
 			git := New()
 			err := git.Clone(tt.args.url, tt.args.ref, tt.args.dir)
-			assert.NoErrorf(t, err, "Clone(%+v) error: %v", tt.args, err)
+
+			switch tt.expectedErr {
+			case nil:
+				assert.NoErrorf(t, err, "Clone(%+v) error: %v", tt.args, err)
+			default:
+				assert.Equal(t, err.Error(), tt.expectedErr.Error())
+			}
 		})
 	}
 }
