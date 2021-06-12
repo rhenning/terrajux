@@ -150,6 +150,9 @@ such as:
 alias terrajux="terrajux -difftool 'opendiff {{.V1}} {{.V2}}'"
 ```
 
+> is it possible to use this in GitHub's pull request workflow?
+
+sure! please check out @mdb's [terrajux-action](github.com/mdb/terrajux-action) for [GitHub Actions](https://github.com/features/actions).
 
 > i'm seeing a stale diff for a branch ref or getting strange errors during
   initialization. what gives?
@@ -181,6 +184,9 @@ awesome! your kindness is very much appreciated. please
 [check out the contribution guidelines](https://github.com/rhenning/terrajux/contribute)
 for more information.
 
+## friends
+
+- @mdb contributes to this project and created [terrajux-action](https://github.com/mdb/terrajux-action), which facilitates the use of `terrajux` in a [GitHub Actions](https://github.com/features/actions) workflow.
 
 ## license
 
