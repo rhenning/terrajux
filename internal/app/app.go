@@ -16,11 +16,11 @@ type App struct {
 	Git       git.Cloner
 	Terraform terraform.Initer
 	Diff      diff.Runner
-	Cache     cache.Initializer
+	Cache     cache.Manager
 	Config    terrajux.Config
 }
 
-func New(gc git.Cloner, ti terraform.Initer, dr diff.Runner, ci cache.Initializer, tc terrajux.Config) *App {
+func New(gc git.Cloner, ti terraform.Initer, dr diff.Runner, ci cache.Manager, tc terrajux.Config) *App {
 	return &App{
 		Git:       gc,
 		Terraform: ti,
@@ -44,32 +44,39 @@ func (a *App) Run() (err error) {
 		}
 	}
 
-	if err = os.Chdir(a.Config.CacheDir); err != nil {
-		return err
-	}
-
 	for i, v := range []string{a.Config.GitRefV1, a.Config.GitRefV2} {
 		dir := git.URLPath(a.Config.GitURL, v)
 		clonedirs[i] = dir
 
-		if _, err := os.Stat(dir); os.IsNotExist(err) {
+		if a.Cache.HasKey(dir) {
+			fmt.Printf("Found %q in cache. Skipping clone.\n", dir)
+		} else {
 			fmt.Printf("Cloning %v @%v\n", a.Config.GitURL, v)
-			if err = a.Git.Clone(a.Config.GitURL, v, dir); err != nil {
+			abspath, _ := a.Cache.GetAbsKeyPath(dir)
+			fmt.Print(abspath)
+
+			if err = a.Git.Clone(a.Config.GitURL, v, abspath); err != nil {
 				return err
 			}
-		} else {
-			fmt.Printf("Found %v@%v in cache. Skipping clone.\n", a.Config.GitURL, v)
 		}
 	}
 
 	for _, v := range clonedirs {
-		fmt.Printf("Running `terraform init -backend=false` in %v`\n", filepath.Join(v, a.Config.GitSubpath))
-		if err = a.Terraform.Init(filepath.Join(v, a.Config.GitSubpath)); err != nil {
+		abspath, _ := a.Cache.GetAbsKeyPath(v)
+		abspath = filepath.Join(abspath, a.Config.GitSubpath)
+
+		fmt.Printf("Running `terraform init -backend=false` in %v`\n", abspath)
+		if err = a.Terraform.Init(abspath); err != nil {
 			return err
 		}
 	}
 
+	if err = os.Chdir(a.Config.CacheDir); err != nil {
+		return err
+	}
+
 	err = a.Diff.Run(
+		// using a relative path here cleans up unified diff output a bit
 		filepath.Join(clonedirs[0], a.Config.GitSubpath),
 		filepath.Join(clonedirs[1], a.Config.GitSubpath),
 	)

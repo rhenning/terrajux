@@ -3,6 +3,7 @@ package git
 import (
 	"fmt"
 	"net/url"
+	"path/filepath"
 	"strings"
 
 	git "github.com/go-git/go-git/v5"
@@ -68,8 +69,8 @@ func URLPath(u string, ref string) (path string) {
 		return urlPathSSH(u, ref)
 	}
 
-	path = fmt.Sprintf("%s%s/%s", up.Host, up.Path, ref)
-	return path
+	path = fmt.Sprintf("%s/%s/%s/%s/%s", up.Scheme, up.Hostname(), up.Port(), up.Path, ref)
+	return filepath.Clean(path)
 }
 
 func urlPathSSH(u string, ref string) (path string) {
@@ -77,5 +78,5 @@ func urlPathSSH(u string, ref string) (path string) {
 	hostpath := ss[len(ss)-1]
 	hostpath = strings.Replace(hostpath, ":", "/", 1)
 	path = fmt.Sprintf("%s/%s", hostpath, ref)
-	return path
+	return filepath.Clean(path)
 }
