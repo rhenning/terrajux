@@ -1,10 +1,17 @@
 package cache
 
-import "os"
+import (
+	"fmt"
+	"os"
+	"path"
+	"path/filepath"
+)
 
-type Initializer interface {
+type Manager interface {
 	Ensure() error
 	Clear() error
+	HasKey(key string) bool
+	GetAbsKeyPath(key string) (abspath string, err error)
 }
 
 type Cache struct {
@@ -27,4 +34,22 @@ func (c *Cache) Clear() error {
 	}
 
 	return c.Ensure()
+}
+
+func (c *Cache) HasKey(k string) bool {
+	if _, err := os.Stat(path.Join(c.Dir, k)); os.IsNotExist(err) {
+		return false
+	}
+
+	return true
+}
+
+func (c *Cache) GetAbsKeyPath(k string) (string, error) {
+	var err error
+
+	if !c.HasKey(k) {
+		err = fmt.Errorf("cache key %q not found", k)
+	}
+
+	return filepath.Join(c.Dir, k), err
 }

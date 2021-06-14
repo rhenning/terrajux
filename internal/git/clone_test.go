@@ -69,16 +69,52 @@ func TestURLPath(t *testing.T) {
 				ref: "main",
 			},
 
-			wantPath: "test.com/foo/bar.git/main",
+			wantPath: "https/test.com/foo/bar.git/main",
 		},
 		{
-			name: "ssh+noscheme+user",
+			name: "scplike+noscheme+user",
 			args: args{
 				url: "git@test.com:foo/bar.git",
 				ref: "v2.0.0",
 			},
 
 			wantPath: "test.com/foo/bar.git/v2.0.0",
+		},
+		{
+			name: "standard+filescheme",
+			args: args{
+				url: "file:///tmp/terrajux-test/something",
+				ref: "main",
+			},
+
+			wantPath: "file/tmp/terrajux-test/something/main",
+		},
+		{
+			name: "standard+scheme+port",
+			args: args{
+				url: "https://test.com:8443/foo/bar.git",
+				ref: "main",
+			},
+
+			wantPath: "https/test.com/8443/foo/bar.git/main",
+		},
+		{
+			name: "standard+scheme+port+dirtypath",
+			args: args{
+				url: "https://test.com:8443/foo/../bar",
+				ref: "main",
+			},
+
+			wantPath: "https/test.com/8443/bar/main",
+		},
+		{
+			name: "scplike+dirtypath",
+			args: args{
+				url: "git@test.com:foo/bar.git",
+				ref: "main",
+			},
+
+			wantPath: "test.com/foo/bar.git/main",
 		},
 	}
 	for _, tt := range tests {
