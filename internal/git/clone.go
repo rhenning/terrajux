@@ -26,10 +26,23 @@ func New() *Git {
 }
 
 func (g *Git) Clone(url string, ref string, dir string) error {
+	// is the ref a fully qualified ref such as 'refs/tags/<ref>'?
+	if strings.HasPrefix(ref, "refs/") {
+		opts := g.mkCloneOptions(url, plumbing.ReferenceName(ref))
+		_, err := git.PlainClone(dir, cloneBare, opts)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
+
+	// attempt to to clone a branch reference such as 'refs/head/<ref>'
 	opts := g.mkCloneOptions(url, plumbing.NewBranchReferenceName(ref))
 	_, err := git.PlainClone(dir, cloneBare, opts)
 
 	// is err of type git.NoMatchingRefSpecError?
+	// attempt to to clone a tag reference such as 'refs/tags/<ref>'
 	if _, ok := err.(git.NoMatchingRefSpecError); ok {
 		opts = g.mkCloneOptions(url, plumbing.NewTagReferenceName(ref))
 		_, err = git.PlainClone(dir, cloneBare, opts)
